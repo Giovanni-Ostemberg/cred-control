@@ -1,0 +1,26 @@
+Classes
+
+Pessoa
+    Nome
+    id
+
+Cartão
+    Id
+    Nome
+    limite-comum
+    limite-bonus
+
+Compras
+    Id
+    Descrição
+    parcelas
+    valor_total
+    valor_parcelas
+    data
+    pessoa_id
+
+Fatura
+    Id
+    data
+    compras[]
+    valor_total

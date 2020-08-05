@@ -1,0 +1,31 @@
+{
+  "name": "cred-control",
+  "version": "1.0.0",
+  "description": "App para o controle das faturas dos cartões de crédito",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Giovanni-Ostemberg/cred-control.git"
+  },
+  "keywords": [
+    "cred",
+    "card",
+    "nodeJs",
+    "javascript",
+    "project"
+  ],
+  "author": "Giovanni Ostemberg de Oliveira",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Giovanni-Ostemberg/cred-control/issues"
+  },
+  "homepage": "https://github.com/Giovanni-Ostemberg/cred-control#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  },
+  "type": "module"
+}

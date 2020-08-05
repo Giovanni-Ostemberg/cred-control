@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menu de Pessoas</title>
+    <link rel="stylesheet" href="/style/basic.css" />
+  </head>
+  <body>
+    <div id="conteiner-all">
+      <div id="nav-bar-conteiner">
+        <nav id="nav-bar">
+          <a class="nav-home" href="/home.html">Home</a>
+          <a class="nav-link" method="GET" href="localhost:3000/pessoas"
+            >Pessoas</a
+          >
+          <a class="nav-link" href="/views/cartoes.html">Cartões</a>
+          <a class="nav-link" href="/views/compras.html">Compras</a>
+          <a class="nav-link" href="/views/faturas.html">Faturas</a>
+        </nav>
+      </div>
+      <div id="form-new">
+        <form id="create-new" method="GET">
+          <input class="create-new-input" name="name" type="text" />
+        </form>
+      </div>
+    </div>
+    <script src="/scripts/pessoas/function.js"></script>
+  </body>
+</html>
