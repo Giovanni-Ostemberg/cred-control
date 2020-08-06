@@ -70,7 +70,6 @@ async function distributeInstallments(installmentId, installmentValue, installme
 
             }else{
                 for(let i = 0; i<installments;i++){
-           
                     invoices.cartoes[0].faturas[++index].push(parcelas);  
                 }
             }
