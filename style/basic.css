@@ -29,3 +29,13 @@ body {
   text-align: center;
   background-color: #73ff81;
 }
+
+#message {
+  text-align: center;
+  text-shadow: 2px 3px 3px aqua;
+  color: #7fffd4;
+  background-color: lightslategray;
+  width: 50%;
+  margin: auto;
+  border-radius: 10%;
+}

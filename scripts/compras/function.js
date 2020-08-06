@@ -8,7 +8,7 @@ const { readFile, writeFile } = fs;
 const app = express();
 app.use(express.json());*/
 
-const buttonCreate = document.querySelector("#new-person");
+const buttonCreate = document.querySelector("#new-purchase");
 
 async function start() {
   const dados = await listAll();
@@ -17,22 +17,22 @@ async function start() {
 }
 
 async function listAll() {
-  const res = await fetch("http://localhost:3000/pessoas/");
+  const res = await fetch("http://localhost:3000/compras/");
   const json = res.json();
   return json;
 }
 
 async function imprimir(data) {
-  const lista = document.querySelector("#people-list");
+  const lista = document.querySelector("#purchase-list");
 
   data.pessoas.forEach((person) => {
     lista.innerHTML +=
       "<tr><td>" +
-      person.id.toString() +
+      purchase.id.toString() +
       "</td><td>" +
-      person.name.toString() +
+      purchase.name.toString() +
       "</td><td><button class='button-delete' value='" +
-      person.id +
+      purchase.id +
       "'>-</button></td></tr>";
   });
 }
@@ -45,16 +45,16 @@ async function handleMenu() {
   });
 }
 
-async function createPerson() {
-  const form = document.querySelector("#people-actions");
+async function createPurchase() {
+  const form = document.querySelector("#purchase-actions");
   form.innerHTML =
-    "<form action='http://localhost:3000/pessoas/create' method='GET'><input name='name' type='text'/><button type='submit'>Submit</button></form>";
+    "<form action='http://localhost:3000/compras/create' method='GET'><input name='name' type='text'/><button type='submit'>Submit</button></form>";
   await listAll();
 }
 
-async function deletePerson() {
+async function deletePurchase() {
   const res = await fetch(
-    "http://localhost:3000/pessoas/delete/" + parseInt(event.target.value)
+    "http://localhost:3000/compras/delete/" + parseInt(event.target.value)
   );
   console.log(res);
 }
