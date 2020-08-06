@@ -1,0 +1,12 @@
+{
+    "cartoes":[{
+        "id":1,
+        "nome":"Submarino",
+        "nextId":1,
+        "faturas":[]
+    },{"id":2,
+        "nome":"NuBank",
+        "nextId":1,
+        "faturas":[]
+    }]
+}
