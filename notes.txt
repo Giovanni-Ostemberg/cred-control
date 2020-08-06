@@ -15,7 +15,7 @@ Compras
     Descrição
     parcelas
     valor_total
-    valor_parcelas
+    valor_parcela
     data
     pessoa_id
 

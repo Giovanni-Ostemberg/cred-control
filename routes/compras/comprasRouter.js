@@ -5,7 +5,7 @@ import moment from "moment";
 const { readFile, writeFile } = fs;
 
 const app = express();
-const moment = moment();
+const momento = moment();
 
 app.use(express.json());
 
@@ -18,69 +18,95 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/create", async (req, res) => {
-    await distributeInstallments(_,_,_,1);
-
-  let purchase = req.query;
+  let purchaseQuery = req.query;
   console.log(purchase.description);
   try {
-    const data = JSON.parse(await readFile("./registros/pessoas.json"));
+    const data = JSON.parse(await readFile("./registros/compras.json"));
     purchase = {
-
-    id: data.nextId++,
-    descrição: purchase.description,
-    parcelas: purchase.installments,
-    valor_total: purchase.totalAmount,
-    valor_parcelas: purchase.installmentsValue,
-    data: new Data(),
-    pessoa_id: purchase.buyer
-
+      id: data.nextId,
+      descrição: purchaseQuery.description,
+      parcelas: purchaseQuery.installments,
+      valor_total: purchaseQuery.totalAmount,
+      valor_parcelas: purchaseQuery.installmentsValue,
+      data: moment().format("DD/MM/yyyy"),
+      pessoa_id: purchaseQuery.buyer,
+      cartao_id: purchaseQuery.card,
     };
 
-    // data.pessoas.push(purchase);
+    data.nextId++;
+    data.compras.push(purchase);
 
-    // await writeFile("./registros/pessoas.json", JSON.stringify(data));
-    // res.redirect("http://localhost:5500/views/pessoas/menu.html");
-    await distributeInstallments(_,_,_,1);
+    await writeFile(JSON.stringify(data));
+    await distributeInstallments(
+      purchase.id,
+      purchaseQuery.installmentsValue,
+      purchaseQuery.installment,
+      purchaseQuery.card
+    );
     res.end();
   } catch (err) {
     console.log(err);
   }
 });
 
-async function distributeInstallments(installmentId, installmentValue, installments, cardId){
-    const invoices = JSON.parse(await readFile("./registros/faturas.json"));
-    const date = new Date();
+async function distributeInstallments(
+  installmentId,
+  installmentValue,
+  installments,
+  cardId
+) {
+  const invoices = JSON.parse(await readFile("./registros/faturas.json"));
+  const date = moment(new Date(), "yyyy-MM-DD");
+  console.log(moment().format("DD/MM/yyyy"));
 
-    const parcelas = {
-        "id": installmentId,
-        "valor_parcela": installmentValue  
+  const parcelas = {
+    id: installmentId,
+    valor_parcela: installmentValue,
+  };
+
+  if (cardId === 1) {
+    let card = await invoices.cartoes.find((thisCard) => {
+      return parseInt(thisCard.id) === 1;
+    });
+
+    let index = card.faturas.findIndex((fatura) => {
+      return fatura.mes === moment().format("MM/yyyy");
+    });
+
+    if (parseInt(moment().format("DD")) > 5) {
+      for (let i = 1; i <= installments; i++) {
+        if (!invoices.cartoes[0].faturas[index + 1]) {
+          await createFatura(invoices, 0, index + 1, i);
+        }
+        console.log(invoices.cartoes[0].faturas[++index]);
+
+        invoices.cartoes[0].faturas[index].compras.push(parcelas);
+      }
+    } else {
+      for (let i = 0; i < installments; i++) {
+        invoices.cartoes[0].faturas[++index].push(parcelas);
+      }
     }
-    
-    if(cardId === 1){
-            let card = await invoices.cartoes.find(thisCard =>{
-                return parseInt(thisCard.id) === 1; 
-               });
-               let index = card.faturas.findIndex(fatura =>{
-                return fatura.mes === moment(date, 'MM/yyyy');
-           });
-            if(parseInt(moment.format(date, 'dddd'))>5){
-                for(let i = 0; i<installments;i++){
-               invoices.cartoes[0].faturas[++index].push(parcelas);              
-            }
+  }
 
-            }else{
-                for(let i = 0; i<installments;i++){
-                    invoices.cartoes[0].faturas[++index].push(parcelas);  
-                }
-            }
-        }
-        
+  if (cardId === 2) {
+  }
+}
 
-        if(cardId === 2){
+async function createFatura(invoices, card, index, i) {
+  const month = moment().add(i, "month");
 
-        }
+  console.log(moment(month).format("MM/yyyy"));
 
-    
+  const fatura = {
+    id: invoices.cartoes[card].nextId,
+    compras: [],
+    data: moment(month).format("MM/yyyy").toString(),
+  };
+  invoices.cartoes[card].nextId++;
+
+  invoices.cartoes[card].faturas.push(fatura);
+  await writeFile("./registros/faturas.json", JSON.stringify(invoices));
 }
 
 export default router;
